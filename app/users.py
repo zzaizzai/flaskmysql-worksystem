@@ -13,7 +13,9 @@ user = Blueprint("users", __name__, template_folder="templates")
 
 @user.route('/')
 def users():
-    cur.execute("select * from users")
+    cur.execute(
+        '''SELECT *, users.id as users_uid from users left join department  
+        on users.department_id = department.id''')
     data_list = cur.fetchall()
 
     return render_template('users.html', users=data_list)
@@ -25,8 +27,7 @@ def add_user():
         name = str(request.form.get("name"))
         user_id = str(request.form.get("user_id"))
         user_pw = str(request.form.get("user_pw"))
-        # department_id = int(request.form.get("department_id"))
-
+        department_id = str(request.form.get("department_id"))
 
         if (not name or not user_id or not user_pw):
             return {"err": "err"}

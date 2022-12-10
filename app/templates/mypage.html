@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <div class="container mx-auto">
+      <div class="d-flex">
+        <h4 class="flex-grow-1">Users Information</h4>
+        <button class="btn btn-outline-primary">Edit</button>
+      </div>
+      <div>
+        {% if user %}
+        <div>{{user.id}}</div>
+        <div>{{user.user_name}}</div>
+        <div>{{user.create_datetime}}</div>
+        <div>{{user.department_name}}</div>
+        {% endif %}
+        <button id="logout" class="btn btn-danger">Log Out</button>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+    <script>
+      $("#logout").click(() => {
+        $.removeCookie("mytoken");
+        location.href = "/";
+      });
+    </script>
+  </body>
+</html>

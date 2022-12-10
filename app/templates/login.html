@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <div class="container mt-4">
+      <form name="form_data" id="form_data">
+        <div class="form-group">
+          <label>id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="id"
+            value="admin"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label>pw</label>
+          <input
+            type="text"
+            class="form-control"
+            name="pw"
+            value="1234"
+            autocomplete="off"
+          />
+        </div>
+        <button type="button" class="btn btn-primary" id="login">login</button>
+        <button id="logout">log out</button>
+      </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+    <script>
+      // import Cookies from 'js-cookie';
+      //   console.log(GetCookie("mytoken"));
+
+      $("#logout").click(() => {
+        $.removeCookie("mytoken");
+      });
+      $("#login").click(() => {
+        var data = $("#form_data").serialize();
+        console.log(data);
+        $.ajax({
+          url: "/auth/login",
+          type: "post",
+          data: data,
+
+          success: function (response) {
+            if (response["result"] == "success") {
+              // 로그인이 정상적으로 되면, 토큰을 받아옵니다.
+              // 이 토큰을 mytoken이라는 키 값으로 쿠키에 저장합니다.
+
+              $.cookie("mytoken", response["token"]);
+
+              location.href='/'
+              //   window.location.href = "/";
+            } else {
+              // 로그인이 안되면 에러메시지를 띄웁니다.
+              alert(response["msg"]);
+            }
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

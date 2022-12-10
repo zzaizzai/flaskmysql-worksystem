@@ -2,20 +2,21 @@ from flask import Flask, jsonify, request, render_template, Blueprint
 from app.db import cur
 from app.users import user
 from app.works import work
+from app.auth import auth
 
 app = Flask(__name__)
 app.register_blueprint(user, url_prefix="/users")
 app.register_blueprint(work, url_prefix="/works")
+app.register_blueprint(auth, url_prefix="/auth")
 
+# from flask_login import LoginManager
+# login_manager = LoginManager()
 
+# login_manager.init_app(app)
 
-# from .models import users
 
 @app.route('/')
 def home():
-    cur.execute("select * from users")
-    data_list = cur.fetchall()
-    print(data_list)
     return render_template('index.html')
 
 @app.route('/users/mode/add')

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <div class="container mt-4">
+      <form id="form_data">
+        <div class="form-group">
+          <label>title</label>
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label>charge department</label>
+          <select class="form-control" name="department_id" id="department_id">
+            <option value="">select department</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+
+          <div class="form-group">
+            <label>title</label>
+            <input type="date" class="form-control" name="due_date" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>text</label>
+          <textarea
+            class="form-control"
+            name="text"
+            id=""
+            cols="30"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <button type="button" class="btn btn-danger" id="add">Sigh Up</button>
+      </form>
+      <div
+        class="error-message alert alert-danger my-4 d-none"
+        role="alert"
+      ></div>
+      <div class="message alert alert-primary d-none my-4" role="alert"></div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script>
+    $("#add").click(() => {
+      var data = $("#form_data").serialize();
+      console.log(data);
+      $.ajax({
+        url: "/works/add",
+        type: "post",
+        data: data,
+      })
+        .done((result) => {
+          console.log(result);
+          if (result.message) {
+            $(".message").removeClass("d-none");
+            $(".message").text(result.message);
+            $(".error-message").addClass("d-none");
+            $("#form_data")[0].reset();
+
+            setTimeout(() => {
+              $(".message").addClass("d-none");
+            }, 3000);
+          }
+          if (result.err) {
+            $(".error-message").removeClass("d-none");
+            $(".message").addClass("d-none");
+            $(".error-message").text(result.err);
+
+            setTimeout(() => {
+              $(".error-message").addClass("d-none");
+            }, 3000);
+          }
+        })
+        .fail((err) => {
+          console.log(err);
+        });
+    });
+  </script>
+</html>
