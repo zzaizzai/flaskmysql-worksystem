@@ -10,22 +10,20 @@
     <div>
       {% include 'navbar.html' %}
       <div class="container">
-        <div class="d-flex">
-          <h5 class="flex-grow-1">Users</h5>
-          <button onclick="location.href='/users/mode/add'" class="btn btn-outline-primary">Add</button>
-        </div>
+        <h4>Users</h4>
         <div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              {% for user in users %}
+              {% if works %} {% for work in works %}
               <div class="d-flex">
                 <div></div>
                 <div>
-                  <a href="#" style="color: black"><h5>{{ user.id }}</h5></a>
+                  <a href="#" style="color: black"><h5>{{ work.id }}</h5></a>
                 </div>
-                <div class="mx-3">{{ user.user_name }}</div>
+                <div class="mx-3">{{ work.title }}</div>
+                <div class="mx-3">{{ work.create_datetime }}</div>
               </div>
-              {% endfor %}
+              {% endfor %} {% endif %}
             </li>
           </ul>
         </div>

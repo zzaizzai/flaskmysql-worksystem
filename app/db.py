@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import mysql.connector
 
+
 load_dotenv(verbose=True)
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -20,5 +21,6 @@ db = mysql.connector.connect(
     db=TABLE,
 )
 
-cur = db.cursor()
+
+cur = db.cursor(dictionary=True)
 

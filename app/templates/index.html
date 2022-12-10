@@ -7,12 +7,11 @@
     <title>Document</title>
   </head>
   <body>
+    {% include 'navbar.html' %}
     <div>
-      good {% if message %}
-      <p>{% for mes in message %}</p>
-      <div>{{ mes }} d</div>
-      <p>{% endfor %}</p>
-      {% endif %}
+      <div class="container mx-auto">
+        <h4>Work system</h4>
+      </div>
     </div>
   </body>
 </html>

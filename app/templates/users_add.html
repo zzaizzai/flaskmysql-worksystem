@@ -13,50 +13,89 @@
     <title>Document</title>
   </head>
   <body>
+    {% include 'navbar.html' %}
     <div class="container mt-4">
-      <!-- <form action="/users/signup" method="POST"> -->
-      <div class="form-group">
-        <label>name</label>
-        <input type="text" class="form-control" name="username" />
-      </div>
-      <div class="form-group">
-        <label>id</label>
-        <input type="text" class="form-control" name="id" />
-      </div>
-      <div class="form-group">
-        <label>pw</label>
-        <input type="text" class="form-control" name="pw" />
-      </div>
-      <div class="form-group">
-        <label>department</label>
-        <select class="form-control" name="" id="department">
-          <option value="">select department</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-danger" id="signup">Sigh Up</button>
-      <!-- </form> -->
+      <form id="form_data">
+        <div class="form-group">
+          <label>user name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label>id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="user_id"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label>pw</label>
+          <input
+            type="text"
+            class="form-control"
+            name="user_pw"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label>department</label>
+          <select class="form-control" name="department_id" id="department_id">
+            <option value="">select department</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-danger" id="add">Sigh Up</button>
+      </form>
+      <div
+        class="error-message alert alert-danger my-4 d-none"
+        role="alert"
+      ></div>
+      <div class="message alert alert-primary d-none my-4" role="alert"></div>
     </div>
   </body>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script>
-    $("#signup").click(function () {
-      data = {
-        user_name: $('input[name="username"]').val(),
-        id: $('input[name="id"]').val(),
-        pw: $('input[name="pw"]').val(),
-        department: $('#department').val(),
-      };
-      $.ajax({
-        method: "POST",
-        url: "/users/signup",
-        data: data,
-      }).done((result) => {
-        console.log(result);
-      });
+    $("#add").click(() => {
+      var data = $("#form_data").serialize();
       console.log(data);
+      $.ajax({
+        url: "/users/add",
+        type: "post",
+        data: data,
+      })
+        .done((result) => {
+          console.log(result);
+          if (result.message) {
+            $(".message").removeClass("d-none");
+            $(".message").text(result.message);
+            $(".error-message").addClass("d-none");
+            $("#form_data")[0].reset();
+
+            setTimeout(() => {
+              $(".message").addClass("d-none");
+            }, 3000);
+          }
+          if (result.err) {
+            $(".error-message").removeClass("d-none");
+            $(".message").addClass("d-none");
+            $(".error-message").text(result.err);
+
+            setTimeout(() => {
+              $(".error-message").addClass("d-none");
+            }, 3000);
+          }
+        })
+        .fail((err) => {
+          console.log(err);
+        });
     });
   </script>
 </html>
