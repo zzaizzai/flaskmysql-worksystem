@@ -23,4 +23,3 @@ db = mysql.connector.connect(
 
 
 cur = db.cursor(dictionary=True)
-
