@@ -9,29 +9,75 @@
   <body>
     <div>
       {% include 'navbar.html' %}
+
       <div class="container">
         <div class="d-flex">
           <h4 class="flex-grow-1">Works</h4>
-          <button onclick="location.href='/works/mode/add'" class="btn btn-outline-primary" >Add</button>
+          <button
+            onclick="location.href='/works/mode/add'"
+            class="btn btn-outline-primary"
+          >
+            Add
+          </button>
+        </div>
+        <div class="d-flex">
+          <input
+            type="text"
+            class="form-control my-2 mx-2"
+            name="due"
+            id="search-text"
+            autocomplete="off"
+            value="{{search_text}}"
+          />
+          <button id="search" class="btn btn-primary my-2">Search</button>
         </div>
         <div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+          <table width="100%">
+            <tbody>
+              <tr>
+                <td><h5>Title</h5></td>
+                <td width="100">User</td>
+                <td width="200">Created</td>
+                <td width="30">Status</td>
+              </tr>
               {% if works %} {% for work in works %}
-              <div class="d-flex">
-                <div>
-                  <a href="/works/{{work.work_id}}" style="color: black"
-                    ><h5>{{ work.title }}</h5></a
-                  >
-                </div>
-                <div class="mx-3">{{ work.user_name }}</div>
-                <div class="mx-3">{{ work.create_datetime }}</div>
-              </div>
+              <!-- works completed -->
+              <tr>
+                <td>
+                  <h5>
+                    <a href="/works/{{work.work_id}}" style="color: black"
+                      >{{ work.title }}</a
+                    >
+                  </h5>
+                </td>
+                <td>{{ work.user_name }}</td>
+                <td>{{ work.works_time }}</td>
+                <td>
+                  {% if work.is_done %}
+                  <h5 class="text-primary font-weight-bold">&nbsp;&#128504;</h5>
+                  {% else %}
+                  <h5>&#183;&#183;&#183;</h5>
+                  {% endif %}
+                </td>
+              </tr>
+
               {% endfor %} {% endif %}
-            </li>
-          </ul>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      $("input[type=text]").on("keyup", function (e) {
+        if (e.key == "Enter" || e.keyCode === 13) {
+          $("#search").trigger("click");
+        }
+      });
+      $("#search").click(() => {
+        console.log($("#search-text").val());
+        location.href = `/works?q=${$("#search-text").val()}`;
+      });
+    </script>
   </body>
 </html>

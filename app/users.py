@@ -21,6 +21,15 @@ def users():
     return render_template('users.html', users=data_list)
 
 
+@user.route('/mode/add')
+def users_add():
+
+    cur.execute('''SELECT * from department ''')
+    result_list = cur.fetchall()
+
+    return render_template('users_add.html', departments=result_list)
+
+
 @user.route('/add', methods=["POST"])
 def add_user():
     if request.method == "POST":

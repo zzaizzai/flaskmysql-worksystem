@@ -15,47 +15,54 @@
   <body>
     {% include 'navbar.html' %}
     <div class="container mt-4">
+      {% if parent_work %}
+      <div class="mb-5">
+        <h5>Work Information</h5>
+        <h5>{{parent_work.title}}</h5>
+        <div class="card"><div class="m-2">{{parent_work.text}}</div></div>
+      </div>
+      {% endif %}
       <form id="form_data">
+        <input type="hidden" value="{{parent_work.id}}" name="parent_id">
+        <h5>New Task</h5>
         <div class="form-group">
-          <label>user name</label>
+          <label>title</label>
           <input
             type="text"
             class="form-control"
-            name="name"
+            name="title"
             autocomplete="off"
           />
         </div>
         <div class="form-group">
-          <label>id</label>
-          <input
-            type="text"
-            class="form-control"
-            name="user_id"
-            autocomplete="off"
-          />
-        </div>
-        <div class="form-group">
-          <label>pw</label>
-          <input
-            type="text"
-            class="form-control"
-            name="user_pw"
-            autocomplete="off"
-          />
-        </div>
-        <div class="form-group">
-          <label>department</label>
+          <label>charge department</label>
           <select class="form-control" name="department_id" id="department_id">
-            {% if departments %} {% for department in departments %}\
+            {% if department_list %} {% for department in department_list %}
             <option value="{{department.id}}">
               {{department.department_name}}
             </option>
-            {% endfor %} {% else %}
-            <option value="1">None</option>
-            {% endif %}
+            {% endfor %} {% endif %}
           </select>
+
+          <div class="form-group">
+            <label>due_date</label>
+            <input type="date" class="form-control" name="due_date" />
+          </div>
         </div>
-        <button type="button" class="btn btn-danger" id="add">Sigh Up</button>
+        <div class="form-group">
+          <label>text</label>
+          <textarea
+            class="form-control"
+            name="text"
+            id=""
+            cols="30"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="add">
+          Add New Task
+        </button>
       </form>
       <div
         class="error-message alert alert-danger my-4 d-none"
@@ -70,7 +77,7 @@
       var data = $("#form_data").serialize();
       console.log(data);
       $.ajax({
-        url: "/users/add",
+        url: "/tasks/add",
         type: "post",
         data: data,
       })
@@ -84,7 +91,7 @@
 
             setTimeout(() => {
               $(".message").addClass("d-none");
-            }, 3000);
+            }, 5000);
           }
           if (result.err) {
             $(".error-message").removeClass("d-none");
@@ -93,7 +100,7 @@
 
             setTimeout(() => {
               $(".error-message").addClass("d-none");
-            }, 3000);
+            }, 5000);
           }
         })
         .fail((err) => {

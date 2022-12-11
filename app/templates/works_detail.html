@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      {% include 'navbar.html' %}
+      <div class="container">
+        <div class="d-flex">
+          <h4 class="flex-grow-1">Work</h4>
+          <button class="btn btn-outline-danger">Edit</button>
+          <button onclick="location.href='/tasks/mode/add?parent_id={{work.work_id}}'" class="mx-2 btn btn-outline-primary">Add Task</button>
+        </div>
+        <div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              {% if work %}
+              <div class="d-flex">
+                <div class="flex-grow-1"><h4>{{work.title}}</h4></div>
+
+                <div>created: {{work.create_datetime}}</div>
+              </div>
+              <div class="flex-grow-1"><h5>{{work.user_name}}</h5></div>
+              <div>{{work.create_user_id}}</div>
+              <div class="d-flex">
+                <div>Status:&nbsp;</div>
+                {% if work.is_done %}
+                <div>Completed by {{who_did.user_name}}</div>
+                {% else %}
+                <div>Proceeding</div>
+                {% endif %}
+              </div>
+
+              <div class="card my-2"><div class="m-2">{{work.text}}</div></div>
+              {% endif %}
+              <div class="mt-5"><h4>Task list</h4></div>
+              <table width="100%">
+                <tbody>
+                  <tr>
+                    <td>
+                      <h5>Title</h5>
+                    </td>
+                    <td width="120">
+                      Due date
+                    </td>
+                    <td width="50">
+                      Status
+                    </td>
+                  </tr>
+
+                  {% if task_list %} {% for task in task_list %}
+                  <tr>
+                    <td>
+                      <h5>{{task.title}}</h5>
+                    </td>
+                    <td>
+                      <div>{{task.due_date}}</div>
+                    </td>
+                    <td>
+                      {% if task.is_done %}
+                      <div class="text-primary font-weight-bold">&nbsp;&#128504;</div>
+                      {% else %}
+                      <div class=" font-weight-bold">&#183;&#183;&#183;</div>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %} {% endif %}
+                </tbody>
+              </table>
+              
+
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -3,11 +3,13 @@ from app.db import cur
 from app.users import user
 from app.works import work
 from app.auth import auth
+from app.tasks import task
 
 app = Flask(__name__)
 app.register_blueprint(user, url_prefix="/users")
 app.register_blueprint(work, url_prefix="/works")
 app.register_blueprint(auth, url_prefix="/auth")
+app.register_blueprint(task, url_prefix="/tasks")
 
 # from flask_login import LoginManager
 # login_manager = LoginManager()
@@ -18,11 +20,6 @@ app.register_blueprint(auth, url_prefix="/auth")
 @app.route('/')
 def home():
     return render_template('index.html')
-
-@app.route('/users/mode/add')
-def users_add():
-    return render_template('users_add.html')
-
 
 @app.route('/index')
 def index():
